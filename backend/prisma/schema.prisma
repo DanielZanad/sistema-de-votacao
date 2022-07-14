@@ -12,9 +12,18 @@ datasource db {
 
 model Enquete{
   id String @id @default(uuid())
-  titulo String
+  titulo String @unique()
   dataInicio DateTime
   dataFim DateTime
   opcoes String
+  votos Voto[]
   @@map("enquetes")
+}
+
+model Voto{
+  id String @id @default(uuid())
+  votos Int
+  enquete Enquete @relation(fields: [enqueteTitulo], references: [titulo])
+  enqueteTitulo String @unique()
+  @@map("votos")
 }
