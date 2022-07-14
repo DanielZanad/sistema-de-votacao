@@ -79,3 +79,43 @@ routes.delete('/enquetes/:titulo', async (req, res) => {
 
   return res.send({ resultadoEnquete, resultadoVoto });
 });
+
+
+// Rotas de voto
+
+routes.get('/voto/:titulo', async (req, res) => {
+  const resultado = await prisma.voto.findUnique({
+    where: {
+      enqueteTitulo: req.params.titulo,
+    },
+  })
+  return res.send(resultado);
+})
+
+routes.get('/voto', async (req, res) => {
+  const resultado = await prisma.voto.findMany();
+  return res.send(resultado);
+})
+
+routes.put('/voto', async (req, res) => {
+  const { votos, enqueteTitulo } = req.body;
+
+  const voto = await prisma.voto.findUnique({
+    where: {
+      enqueteTitulo
+    },
+  });
+
+  const resultado = await prisma.voto.update({
+    where: {
+      enqueteTitulo
+    },
+    data: {
+      votos: Number(voto?.votos) + Number(votos),
+      enqueteTitulo
+    }
+  }
+  )
+
+  return res.send(resultado);
+})
