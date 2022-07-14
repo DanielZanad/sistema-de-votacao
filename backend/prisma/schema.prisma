@@ -22,8 +22,9 @@ model Enquete{
 
 model Voto{
   id String @id @default(uuid())
+  opcao String @unique()
   votos Int
   enquete Enquete @relation(fields: [enqueteTitulo], references: [titulo])
-  enqueteTitulo String @unique()
+  enqueteTitulo String 
   @@map("votos")
 }
