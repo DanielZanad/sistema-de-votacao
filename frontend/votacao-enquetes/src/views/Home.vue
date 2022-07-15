@@ -10,6 +10,9 @@ import SectionSurvey from '../components/SectionSurvey.vue'
 
 export default {
   name: "Home",
+  components: {
+    SectionSurvey
+  },
   data(){
     return{
 
