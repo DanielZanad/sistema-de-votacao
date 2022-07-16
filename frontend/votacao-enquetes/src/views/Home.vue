@@ -7,16 +7,19 @@
     :surveysStarted="surveyStartedComputed"
     :surveysFinished="surveyFinishedComputed"
     />
+
   </div>
 </template>
 
 <script>
 import SectionSurvey from '../components/SectionSurvey.vue'
+import ModalSurvey from '../components/ModalSurvey.vue'
 
 export default {
   name: "Home",
   components: {
-    SectionSurvey
+    SectionSurvey,
+    ModalSurvey
   },
   data(){
     return{

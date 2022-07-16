@@ -5,7 +5,7 @@
         <h2 class="main-title iniciar">Enquetes para iniciar</h2>
       </div>
       <div class="survey-card">
-        <CardSurvey v-if="start" :surveys="surveysToStart" />
+        <CardSurvey v-if="start" :surveys="surveysToStart" @showModalEvent="showModal($event)"/>
       </div>
     </article>
     <article class="main-article started">
@@ -13,7 +13,7 @@
         <h2 class="main-title iniciar">Enquetes Iniciadas</h2>
       </div>
       <div class="survey-card">
-        <CardSurvey v-if="started" :surveys="surveysStarted" />
+        <CardSurvey v-if="started" :surveys="surveysStarted" @showModalEvent="showModal($event)"/>
       </div>
     </article>
     <article class="main-article finished">
@@ -21,13 +21,16 @@
         <h2 class="main-title iniciar">Enquetes Finalizadas</h2>
       </div>
       <div class="survey-card">
-        <CardSurvey v-if="finished" :surveys="surveysFinished" />
+        <CardSurvey v-if="finished" :surveys="surveysFinished" @showModalEvent="showModal($event)"/>
       </div>
     </article>
+    <ModalSurvey :survey="dataToModal"/>
   </section>
 </template>
 
 <script>
+
+import ModalSurvey from "../components/ModalSurvey.vue";
 import CardSurvey from "./CardSurvey.vue";
 
 export default {
@@ -37,6 +40,7 @@ export default {
       start: false,
       started: false,
       finished: false,
+      dataToModal: []
     };
   },
   mounted() {
@@ -51,7 +55,10 @@ export default {
     }, 100);
   },
   methods: {
-  
+    showModal($event){
+      console.log($event.data);
+      this.dataToModal = $event.data
+    }
   },
   props: {
     surveys: Array,
@@ -59,15 +66,13 @@ export default {
     surveysStarted: Array,
     surveysFinished: Array
   },
-  components: { CardSurvey },
+  components: { CardSurvey, ModalSurvey },
 };
 </script>
 
 
 <style scoped>
-.main-title {
-  font-size: large;
-}
+
 
 .survey-card {
   display: flex;
@@ -77,9 +82,11 @@ export default {
 .main-wrap.survey-title {
   border-radius: 20px;
   box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.356);
+  
   background-color: #c3cbcb;
   line-height: 50px;
   margin: 25px;
   padding: 10px 10px 10px 25px;
+  
 }
 </style>

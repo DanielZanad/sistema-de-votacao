@@ -1,30 +1,53 @@
 <template>
-  <article class="card-survey" v-for="(survey, id) in surveys" :key="id" >
-    <h3>{{survey.titulo}}</h3>
-    <p>{{formatDate(survey.dataInicio)}}</p>
-    <button class="main-button"> Saiba Mais </button>
+  <article class="card-survey" v-for="(survey, id) in surveys" :key="id">
+    <h3>{{ survey.titulo }}</h3>
+    <p>{{ formatDate(survey.dataInicio) }}</p>
+    <button class="main-button" @click="showModalEventEmit(survey)">
+      Saiba Mais
+    </button>
   </article>
 </template>
 
 <script>
-
 export default {
-  name:"card-survey",
-  props:{
-    surveys: Array
+  name: "card-survey",
+  props: {
+    surveys: Array,
   },
-  methods:{
-    formatDate(data){
-      console.log(this.surveys);
-      data = new Date(data)
-      return data.toLocaleString('pt-BR');
-    }
-  }
-}
+  components: {},
+  emits: ["showModalEvent"],
+  methods: {
+    showModalEventEmit(data) {
+      this.$emit("showModalEvent", { data });
+      this.showModal();
+    },
+    formatDate(data) {
+      data = new Date(data);
+      return data.toLocaleString("pt-BR");
+    },
+    showModal() {
+      const modal = document.getElementById("modal");
+      const close = document.getElementsByClassName("close")[0];
+      modal.style.display = "block";
+      close.onclick =  () => {
+        modal.style.display = "none";
+      };
+      window.onclick = event => {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    },
+    test(nome) {
+      return nome;
+    },
+  },
+  computed: {},
+};
 </script>
 
 <style scoped>
-.card-survey{
+.card-survey {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -36,21 +59,10 @@ export default {
   margin-left: 50px;
   margin-top: 35px;
   padding: 25px;
-  background-color: #C4D5D7;
+  background-color: #c4d5d7;
   border-radius: 20px;
   box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.356);
 }
 
-.main-button{
-  border: none;
-  border-radius: 20px;
-  box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.356);
-  font-size: 1.1em;
-  margin-left: 15px; 
-  margin-right: 15px; 
-  margin-top: 15px; 
-  padding: 10px;
-  cursor: pointer;
-}
 
 </style>

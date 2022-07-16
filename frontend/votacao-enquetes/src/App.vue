@@ -80,4 +80,31 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+body{
+  background-color: azure;
+}
+
+
+.main-title {
+  font-size: large;
+}
+
+
+
+.main-button {
+  border: none;
+  border-radius: 20px;
+  box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.356);
+  font-size: 1.1em;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 15px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.main-checkbox{
+  margin-left: 30px;
+  width: 20px;
+}
 </style>
