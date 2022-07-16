@@ -3,12 +3,16 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <header class="modal-header">
-        <h1 class="main-title">{{survey.titulo}}</h1>
+        <h1 class="main-title">{{ survey.titulo }}</h1>
       </header>
       <body class="modal-body">
-        <div class="modal-checkbox" v-for="(opcao, id) in optionsArray" :key="id">
-          <label :for="opcao">{{opcao}}</label>
-          <input type="checkbox" class="main-checkbox">
+        <div
+          class="modal-checkbox"
+          v-for="(opcao, id) in survey.opcoes"
+          :key="id"
+        >
+          <label :for="opcao">{{ opcao }}</label>
+          <input type="checkbox" class="main-checkbox" />
           <p>VOTOS.......: 0</p>
         </div>
       </body>
@@ -21,51 +25,30 @@
 
 <script>
 export default {
-  name: 'modal-survey',
-  data(){
-    return {
-      optionsArray: []
-    }
+  name: "modal-survey",
+  data() {
+    return {};
   },
-  mounted(){
-    let interval = setInterval(() => {
-      if(this.survey.opcoes !== undefined){
-        this.optionsArray = this.survey.opcoes.split(";");
-        clearInterval(interval)
-      }
-    }, 1000);
-
-
-
-    
+  props: {
+    survey: Object,
   },
-  props:{
-    survey: Object
-  },
-  methods:{
-    createOptions(options){
-      const optionsArray = options.split(";");
-      return optionsArray
-    }
-  },
-  
-}
+};
 </script>
 
 <style scoped>
 .main-modal {
-  display: none; 
-  position: fixed; 
-  z-index: 1; 
+  display: none;
+  position: fixed;
+  z-index: 1;
   padding-top: 100px;
-  
+
   left: 0;
   top: 0;
-  width: 100%; 
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4); 
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
@@ -91,25 +74,25 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
-.modal-body{
-  display:flex;
+.modal-body {
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
-.modal-header{
-  display:flex;
+.modal-header {
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin: 50px;
 }
-.modal-footer{
-  display:flex;
+.modal-footer {
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.modal-checkbox{
-  background-color: #E6E6E6;
+.modal-checkbox {
+  background-color: #e6e6e6;
   box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.356);
   border-radius: 20px;
   width: 30%;
@@ -118,16 +101,14 @@ export default {
   padding: 30px;
 }
 
-.main-button.-voted{
-
+.main-button.-voted {
   padding: 30px;
   width: 30%;
   margin: 40px;
   font-size: large;
 }
-body{
+body {
   border-radius: 20px;
-  background: radial-gradient(azure, #ffffff)
+  background: radial-gradient(azure, #ffffff);
 }
-
 </style>

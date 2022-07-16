@@ -56,7 +56,6 @@ export default {
   },
   methods: {
     showModal($event){
-      console.log($event.data);
       this.dataToModal = $event.data
     }
   },
