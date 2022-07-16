@@ -10,7 +10,17 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data(){
+    return {}
+  },
+  created(){
+    
+    this.$store.dispatch("requestAllSurveyStart");
+    this.$store.dispatch("requestAllSurveyStarted");
+    this.$store.dispatch("requestAllSurveyFinished");
+    this.$store.dispatch("requestAllSurveyData");
+  }
 }
 </script>
 

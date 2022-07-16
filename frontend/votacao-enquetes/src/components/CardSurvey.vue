@@ -1,7 +1,7 @@
 <template>
-  <article class="card-survey">
-    <h3>Titulo da enquete</h3>
-    <p>Inicia em ...</p>
+  <article class="card-survey" v-for="(survey, id) in surveys" :key="id" >
+    <h3>{{survey.titulo}}</h3>
+    <p>{{formatDate(survey.dataInicio)}}</p>
     <button class="main-button"> Saiba Mais </button>
   </article>
 </template>
@@ -9,7 +9,17 @@
 <script>
 
 export default {
-
+  name:"card-survey",
+  props:{
+    surveys: Array
+  },
+  methods:{
+    formatDate(data){
+      console.log(this.surveys);
+      data = new Date(data)
+      return data.toLocaleString('pt-BR');
+    }
+  }
 }
 </script>
 
