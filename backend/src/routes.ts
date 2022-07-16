@@ -1,3 +1,4 @@
+import { Enquete } from '@prisma/client';
 import express from 'express';
 import { prisma } from './prisma';
 
@@ -13,7 +14,8 @@ routes.get('/enquetes', async (req, res) => {
   return res.send(resultado);
 });
 
-routes.get('/enquetes/:titulo', async (req, res) => {
+
+routes.get('/enquetes/registrada/:titulo', async (req, res) => {
   const resultado = await prisma.enquete.findUnique({
     where: {
       titulo: req.params.titulo,
@@ -21,27 +23,86 @@ routes.get('/enquetes/:titulo', async (req, res) => {
   })
   return res.send(resultado);
 
-})
+});
+
+
+routes.get('/enquetes/iniciar', async(req, res) => {
+  const resultado = await prisma.enquete.findMany();
+  const hoje = new Date()
+  const enquetesParaIniciar: Enquete[] = [];
+
+  resultado.forEach(enquete => {
+   if (hoje <= new Date(enquete.dataInicio)) enquetesParaIniciar.push(enquete)
+  });
+
+
+  return res.send(enquetesParaIniciar);
+});
+
+routes.get('/enquetes/iniciadas', async(req, res) => {
+  const resultado = await prisma.enquete.findMany();
+  const hoje = new Date()
+  const enquetesIniciadas: Enquete[] = [];
+
+  resultado.forEach(enquete => {
+   if (hoje >= new Date(enquete.dataInicio) && hoje <= new Date(enquete.dataFim)) {
+    enquetesIniciadas.push(enquete)
+    console.log("caiu")
+  }
+  });
+
+
+  return res.send(enquetesIniciadas);
+
+});
+
+routes.get('/enquetes/finalizadas', async(req, res) => {
+  const resultado = await prisma.enquete.findMany();
+  const hoje = new Date()
+  const enquetesFinalizadas: Enquete[] = [];
+
+  resultado.forEach(enquete => {
+   if (hoje >= new Date(enquete.dataFim) && hoje >= new Date(enquete.dataInicio)) enquetesFinalizadas.push(enquete)
+  });
+
+
+  return res.send(enquetesFinalizadas);
+
+});
+
 
 
 routes.post('/enquetes', async (req, res) => {
   const { titulo, dataInicio, dataFim, opcoes } = req.body
 
+  const novaDataInicio = new Date(dataInicio);
+  novaDataInicio.setHours(novaDataInicio.getHours() + 3);
+  
+  const novaDataFim = new Date(dataFim);
+  novaDataFim.setHours(novaDataFim.getHours() + 3);
+
   const resultado = await prisma.enquete.create({
     data: {
       titulo,
-      dataInicio: new Date(dataInicio),
-      dataFim: new Date(dataFim),
+      dataInicio: novaDataInicio,
+      dataFim: novaDataFim,
       opcoes: opcoes.join(";")
     }
   });
 
-  return res.send({ resultado});
+  return res.send({resultado});
 });
 
 
 routes.put('/enquetes', async (req, res) => {
   const { titulo, dataInicio, dataFim, opcoes } = req.body;
+
+  const novaDataInicio = new Date(dataInicio);
+  novaDataInicio.setHours(novaDataInicio.getHours() + 3);
+  
+  const novaDataFim = new Date(dataInicio);
+  novaDataFim.setHours(novaDataFim.getHours() + 3);
+
 
   const resultado = await prisma.enquete.update({
     where: {
@@ -49,8 +110,8 @@ routes.put('/enquetes', async (req, res) => {
     },
     data: {
       titulo,
-      dataInicio: new Date(dataInicio),
-      dataFim: new Date(dataFim),
+      dataInicio: novaDataInicio,
+      dataFim: novaDataFim,
       opcoes: opcoes.join(";")
     }
   })
@@ -105,7 +166,7 @@ routes.post('/voto', async (req, res)=> {
 })
 
 routes.put('/voto', async (req, res) => {
-  const { votos, opcao } = req.body;
+  const { opcao } = req.body;
 
   const voto = await prisma.voto.findUnique({
     where: {
@@ -118,7 +179,7 @@ routes.put('/voto', async (req, res) => {
       opcao
     },
     data: {
-      votos: Number(voto?.votos) + Number(votos),
+      votos: Number(voto?.votos) + 1,
       opcao
     }
   }
